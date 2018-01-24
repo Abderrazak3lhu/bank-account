@@ -1,4 +1,4 @@
 package com.talan.bankaccount.bankaccount.exception;
 
-public class AmountNotValidException {
+public class AmountNotValidException extends RuntimeException {
 }

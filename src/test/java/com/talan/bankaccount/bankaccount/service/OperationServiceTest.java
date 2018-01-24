@@ -3,6 +3,7 @@ package com.talan.bankaccount.bankaccount.service;
 import com.talan.bankaccount.bankaccount.dao.OperationRepository;
 import com.talan.bankaccount.bankaccount.domain.Account;
 import com.talan.bankaccount.bankaccount.domain.Operation;
+import com.talan.bankaccount.bankaccount.exception.AmountNotValidException;
 import com.talan.bankaccount.bankaccount.util.OperationDTO;
 import com.talan.bankaccount.bankaccount.util.OperationType;
 import org.assertj.core.api.Assertions;
@@ -31,18 +32,20 @@ public class OperationServiceTest {
 
     // deposit setup
     private OperationDTO operationDTO;
+    private OperationDTO notValidOperationDTO;
     private Operation deposit;
     private Account accountDeposit;
 
     @Before
     public void initialize() {
         operationDTO = new OperationDTO(123123123L, 1000D);
+        notValidOperationDTO = new OperationDTO(123123123L, -1000D);
         accountDeposit = new Account(123123123L, 0);
         deposit = new Operation(accountDeposit, 1000L, OperationType.DEPOSIT);
     }
 
     @Test
-    public void depositMoney_validAccount_expect_depositOperationCreated() {
+    public void depositValidMoney_validAccount_expect_depositOperationCreated() {
 
         given(accountService.getAccount(operationDTO.getAccountNumber())).willReturn(accountDeposit);
         given(accountService.updateAccount(anyObject())).willReturn(accountDeposit);
@@ -54,5 +57,13 @@ public class OperationServiceTest {
         Assertions.assertThat(deposit.getAccount().getBalance()).isEqualTo(1000D);
         Assertions.assertThat(deposit.getAmount()).isEqualTo(1000D);
         Assertions.assertThat(deposit.getType()).isEqualTo(OperationType.DEPOSIT);
+    }
+
+    @Test(expected =  AmountNotValidException.class)
+    public void depositNotValidMoney_validAccount_expect_AmountNotValidException() {
+
+        given(accountService.getAccount(notValidOperationDTO.getAccountNumber())).willReturn(accountDeposit);
+        deposit = operationService.deposit(notValidOperationDTO);
+
     }
 }
