@@ -16,7 +16,7 @@ public class OperationController {
     OperationService operationService;
     @PostMapping(value = "/deposit", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Operation deposit(@RequestBody OperationDTO operationDTO) {
-        throw new UnsupportedOperationException();
+        return operationService.deposit(operationDTO);
     }
 
 }
