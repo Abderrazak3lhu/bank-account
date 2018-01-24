@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 public class AccountService {
     @Autowired
     private AccountRepository accountRepository;
+
     public Account getAccount(Long accountNumber) {
         Account account =  accountRepository.findOne(accountNumber);
         if(account == null){
@@ -19,6 +20,10 @@ public class AccountService {
     }
 
     public Account updateAccount(Account account) {
-        throw new UnsupportedOperationException();
+        Account retrievedAccount =  accountRepository.findOne(account.getAccountNumber());
+        if(retrievedAccount == null){
+            throw new AccountNotFoundException();
+        }
+        return accountRepository.save(account);
     }
 }
