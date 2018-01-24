@@ -25,4 +25,10 @@ public class Operation implements Serializable {
     private double amount;
     private Date operationDate = new Date();
     private OperationType type;
+
+    public Operation(Account account, double amount, OperationType type) {
+        this.account = account;
+        this.amount = amount;
+        this.type = type;
+    }
 }

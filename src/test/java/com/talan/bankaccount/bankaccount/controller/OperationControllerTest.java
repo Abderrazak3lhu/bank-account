@@ -1,7 +1,6 @@
-package com.talan.bankaccount.bankaccount.Controller;
+package com.talan.bankaccount.bankaccount.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.talan.bankaccount.bankaccount.controller.OperationController;
 import com.talan.bankaccount.bankaccount.util.OperationDTO;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,8 +12,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.anyObject;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 

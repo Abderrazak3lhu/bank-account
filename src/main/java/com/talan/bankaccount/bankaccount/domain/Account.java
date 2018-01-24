@@ -18,4 +18,10 @@ public class Account {
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
     @Getter(onMethod = @__(@JsonIgnore))
     private Collection<Operation> operations;
+
+    public Account(long accountNumber, double balance) {
+
+        this.accountNumber = accountNumber;
+        this.balance = balance;
+    }
 }
