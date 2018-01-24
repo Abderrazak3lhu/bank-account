@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.talan.bankaccount.bankaccount.domain.Account;
 import com.talan.bankaccount.bankaccount.domain.Operation;
 import com.talan.bankaccount.bankaccount.exception.AccountNotFoundException;
+import com.talan.bankaccount.bankaccount.exception.AmountNotValidException;
 import com.talan.bankaccount.bankaccount.service.AccountService;
 import com.talan.bankaccount.bankaccount.service.OperationService;
 import com.talan.bankaccount.bankaccount.util.OperationDTO;
@@ -48,7 +49,6 @@ public class OperationControllerTest {
     public void initialize() {
         objectMapper = new ObjectMapper();
         operationDTO = new OperationDTO(123123123L, 1000D);
-        operationDTO = new OperationDTO(123123123L, 1000D);
         accountDeposit = new Account(123123123L, 0);
         accountDeposit.setBalance(accountDeposit.getBalance() + operationDTO.getAmount());
         deposit = new Operation(accountDeposit, 1000L, OperationType.DEPOSIT);
@@ -75,5 +75,13 @@ public class OperationControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.post("/deposit").contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(operationDTO)))
                 .andExpect(status().isNotAcceptable());
+    }
+    @Test
+    public void depositMoney_NotValidAmount_expect_responseStatusNotAcceptable() throws Exception {
+
+        given(operationService.deposit(anyObject())).willThrow(new AmountNotValidException());
+        mockMvc.perform(MockMvcRequestBuilders.post("/deposit").contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(operationDTO)))
+                .andExpect(status().isBadRequest());
     }
 }

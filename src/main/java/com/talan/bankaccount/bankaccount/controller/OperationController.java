@@ -2,6 +2,7 @@ package com.talan.bankaccount.bankaccount.controller;
 
 import com.talan.bankaccount.bankaccount.domain.Operation;
 import com.talan.bankaccount.bankaccount.exception.AccountNotFoundException;
+import com.talan.bankaccount.bankaccount.exception.AmountNotValidException;
 import com.talan.bankaccount.bankaccount.service.OperationService;
 import com.talan.bankaccount.bankaccount.util.OperationDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,13 @@ public class OperationController {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
-    private void AccountNotFoundHandler(AccountNotFoundException e){
+    private void accountNotFoundHandler(AccountNotFoundException e){
+
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    private void amountNotValidException(AmountNotValidException e){
 
     }
 }
