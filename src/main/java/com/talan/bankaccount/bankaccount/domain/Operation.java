@@ -11,7 +11,6 @@ import java.util.Date;
 @Getter
 @Setter
 @NoArgsConstructor
-@RequiredArgsConstructor
 public class Operation implements Serializable {
 
     @Id
@@ -19,14 +18,11 @@ public class Operation implements Serializable {
     private Long id;
     @ManyToOne
     @JoinColumn(name = "main_account")
-    @NonNull
     private Account account;
     @ManyToOne
     @JoinColumn(name = "destination_account")
     private Account destinationAccount;
-    @NonNull
     private double amount;
     private Date operationDate = new Date();
-    @NonNull
     private OperationType type;
 }

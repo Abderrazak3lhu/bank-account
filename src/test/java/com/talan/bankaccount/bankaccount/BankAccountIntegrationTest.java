@@ -38,10 +38,10 @@ public class BankAccountIntegrationTest {
 
         Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         //suppose that account amount is 0 and id is 1;
-        Assertions.assertThat(response.getBody().getAccount().getAccountNumber()).isEqualTo(1L);
-        Assertions.assertThat(response.getBody().getAccount().getBalance()).isEqualTo(1000D);
         Assertions.assertThat(response.getBody().getAmount()).isEqualTo(1000D);
         Assertions.assertThat(response.getBody().getType()).isEqualTo(OperationType.DEPOSIT);
+        Assertions.assertThat(response.getBody().getAccount().getAccountNumber()).isEqualTo(1L);
+        Assertions.assertThat(response.getBody().getAccount().getBalance()).isEqualTo(1000D);
 
     }
 
