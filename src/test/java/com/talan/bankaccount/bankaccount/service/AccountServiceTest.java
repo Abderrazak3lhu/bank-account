@@ -38,7 +38,7 @@ public class AccountServiceTest {
     public void getAccount_validAccount_accountReturned() {
 
         given(accountRepository.findOne(anyLong())).willReturn(retrievedAccount);
-        retrievedAccount = accountService.getAccount(1L);
+        retrievedAccount = accountService.getByAccountNumber(1L);
 
         Assertions.assertThat(retrievedAccount.getAccountNumber()).isEqualTo(1L);
         Assertions.assertThat(retrievedAccount.getBalance()).isEqualTo(0D);
@@ -48,7 +48,7 @@ public class AccountServiceTest {
     public void getAccount_notValidAccount_expect_accountNotFoundException() {
 
         given(accountRepository.findOne(anyLong())).willReturn(null);
-        retrievedAccount = accountService.getAccount(1L);
+        retrievedAccount = accountService.getByAccountNumber(1L);
 
     }
 
@@ -58,7 +58,7 @@ public class AccountServiceTest {
         given(accountRepository.findOne(anyLong())).willReturn(retrievedAccount);
         given(accountRepository.save(any(Account.class))).willReturn(updatedAccount);
 
-        Account updatedAccount = accountService.updateAccount(retrievedAccount);
+        Account updatedAccount = accountService.update(retrievedAccount);
 
         Assertions.assertThat(updatedAccount.getAccountNumber()).isEqualTo(1L);
         Assertions.assertThat(updatedAccount.getBalance()).isEqualTo(1000D);
@@ -68,7 +68,7 @@ public class AccountServiceTest {
     public void updateAccount_notFoundAccount_expect_accountNotFoundException() {
 
         given(accountRepository.findOne(anyLong())).willReturn(null);
-        retrievedAccount = accountService.updateAccount(accountToUpdate);
+        retrievedAccount = accountService.update(accountToUpdate);
 
     }
 }

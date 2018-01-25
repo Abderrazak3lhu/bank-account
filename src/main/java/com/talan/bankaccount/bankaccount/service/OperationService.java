@@ -24,12 +24,12 @@ public class OperationService {
     // ######### Deposit #########
     public Operation deposit(OperationDTO operationDTO) {
 
-        Account account = accountService.getAccount(operationDTO.getAccountNumber());
+        Account account = accountService.getByAccountNumber(operationDTO.getAccountNumber());
         if (operationDTO.getAmount() <= 0) {
             throw new AmountNotValidException("Amount not valid");
         }
         account.setBalance(account.getBalance() + operationDTO.getAmount());
-        account = accountService.updateAccount(account);
+        account = accountService.update(account);
         Operation deposit = new Operation(account, operationDTO.getAmount(), OperationType.DEPOSIT);
         deposit = operationRepository.save(deposit);
         log.info("deposit saved : ", deposit);
@@ -39,7 +39,7 @@ public class OperationService {
     // ######### Withdraw #########
     public Operation withdraw(OperationDTO operationDTO) {
 
-        Account account = accountService.getAccount(operationDTO.getAccountNumber());
+        Account account = accountService.getByAccountNumber(operationDTO.getAccountNumber());
         if (operationDTO.getAmount() <= 0) {
             throw new AmountNotValidException("Amount not valid");
         }
@@ -48,7 +48,7 @@ public class OperationService {
         }
 
         account.setBalance(account.getBalance() - operationDTO.getAmount());
-        account = accountService.updateAccount(account);
+        account = accountService.update(account);
         Operation withdraw = new Operation(account, operationDTO.getAmount(), OperationType.WITHDRAW);
         withdraw = operationRepository.save(withdraw);
         log.info("withdraw saved : ", withdraw);
@@ -57,8 +57,8 @@ public class OperationService {
 
     // ######### Transfert #########
     public Operation transfert(TransfertDTO transfertDTO) {
-        Account mainAccount = accountService.getAccount(transfertDTO.getMainAccountNumber());
-        Account destinationAccount = accountService.getAccount(transfertDTO.getDestinationAccountNumber());
+        Account mainAccount = accountService.getByAccountNumber(transfertDTO.getMainAccountNumber());
+        Account destinationAccount = accountService.getByAccountNumber(transfertDTO.getDestinationAccountNumber());
         if (transfertDTO.getAmount() <= 0) {
             throw new AmountNotValidException("Amount not valid");
         }
@@ -67,8 +67,8 @@ public class OperationService {
         }
         mainAccount.setBalance(mainAccount.getBalance() - transfertDTO.getAmount());
         destinationAccount.setBalance(mainAccount.getBalance() + transfertDTO.getAmount());
-        mainAccount = accountService.updateAccount(mainAccount);
-        destinationAccount = accountService.updateAccount(destinationAccount);
+        mainAccount = accountService.update(mainAccount);
+        destinationAccount = accountService.update(destinationAccount);
 
         Operation transfert = new Operation(mainAccount, destinationAccount, transfertDTO.getAmount(), OperationType.TRANSFERT);
         transfert = operationRepository.save(transfert);

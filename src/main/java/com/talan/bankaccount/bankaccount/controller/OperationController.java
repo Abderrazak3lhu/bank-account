@@ -36,22 +36,4 @@ public class OperationController {
         log.info("Transfert endpoint invoked");
         return operationService.transfert(transfertDTO);
     }
-
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
-    private void accountNotFoundHandler(AccountNotFoundException e) {
-        e.printStackTrace();
-    }
-
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    private void amountNotValidException(AmountNotValidException e) {
-        e.printStackTrace();
-    }
-
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
-    private void notSufficientFunds(NotSufficientFunds e) {
-        e.printStackTrace();
-    }
 }

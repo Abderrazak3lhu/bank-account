@@ -13,7 +13,7 @@ public class AccountService {
     @Autowired
     private AccountRepository accountRepository;
 
-    public Account getAccount(Long accountNumber) {
+    public Account getByAccountNumber(Long accountNumber) {
         Account account = accountRepository.findOne(accountNumber);
         if (account == null) {
             throw new AccountNotFoundException("Account not found");
@@ -22,7 +22,7 @@ public class AccountService {
         return account;
     }
 
-    public Account updateAccount(Account account) {
+    public Account update(Account account) {
         Account retrievedAccount = accountRepository.findOne(account.getAccountNumber());
         if (retrievedAccount == null) {
             throw new AccountNotFoundException("Account not found");

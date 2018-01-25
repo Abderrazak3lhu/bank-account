@@ -67,8 +67,8 @@ public class OperationServiceTest {
     @Test
     public void depositValidAmount_validAccount_depositOperationDone() {
 
-        given(accountService.getAccount(operationDTO.getAccountNumber())).willReturn(accountDeposit);
-        given(accountService.updateAccount(anyObject())).willReturn(accountDeposit);
+        given(accountService.getByAccountNumber(operationDTO.getAccountNumber())).willReturn(accountDeposit);
+        given(accountService.update(anyObject())).willReturn(accountDeposit);
         given(operationRepository.save(any(Operation.class))).willReturn(deposit);
 
         deposit = operationService.deposit(operationDTO);
@@ -82,7 +82,7 @@ public class OperationServiceTest {
     @Test(expected = AmountNotValidException.class)
     public void depositNotValidAmount_validAccount_AmountNotValidException() {
 
-        given(accountService.getAccount(notValidOperationDTO.getAccountNumber())).willReturn(accountDeposit);
+        given(accountService.getByAccountNumber(notValidOperationDTO.getAccountNumber())).willReturn(accountDeposit);
         deposit = operationService.deposit(notValidOperationDTO);
 
     }
@@ -91,8 +91,8 @@ public class OperationServiceTest {
     @Test
     public void withdrawValidAmount_validAccount_withdrawalOperationDone() {
 
-        given(accountService.getAccount(operationDTO.getAccountNumber())).willReturn(accountWithdraw);
-        given(accountService.updateAccount(anyObject())).willReturn(accountWithdraw);
+        given(accountService.getByAccountNumber(operationDTO.getAccountNumber())).willReturn(accountWithdraw);
+        given(accountService.update(anyObject())).willReturn(accountWithdraw);
         given(operationRepository.save(any(Operation.class))).willReturn(withdraw);
 
         withdraw = operationService.withdraw(operationDTO);
@@ -107,10 +107,10 @@ public class OperationServiceTest {
     @Test
     public void transfertValidAmount_validAccounts_transfertOperationDone() {
 
-        given(accountService.getAccount(transfertDTO.getMainAccountNumber())).willReturn(mainAccount);
-        given(accountService.getAccount(transfertDTO.getDestinationAccountNumber())).willReturn(destinationAccount);
-        given(accountService.updateAccount(mainAccount)).willReturn(mainAccount);
-        given(accountService.updateAccount(destinationAccount)).willReturn(destinationAccount);
+        given(accountService.getByAccountNumber(transfertDTO.getMainAccountNumber())).willReturn(mainAccount);
+        given(accountService.getByAccountNumber(transfertDTO.getDestinationAccountNumber())).willReturn(destinationAccount);
+        given(accountService.update(mainAccount)).willReturn(mainAccount);
+        given(accountService.update(destinationAccount)).willReturn(destinationAccount);
         given(operationRepository.save(any(Operation.class))).willReturn(transfert);
 
         transfert = operationService.transfert(transfertDTO);
