@@ -59,7 +59,7 @@ public class OperationServiceTest {
         // Transfert init
         transfertDTO = new TransfertDTO(1L, 2L, 1000D);
         mainAccount = new Account(1L, 1000D);
-        destinationAccount = new Account(1L, 0D);
+        destinationAccount = new Account(2L, 0D);
         transfert = new Operation(mainAccount, destinationAccount, 1000D, OperationType.TRANSFERT);
     }
 

@@ -59,7 +59,23 @@ public class OperationService {
 
     // ######### Transfert #########
     public Operation transfert(TransfertDTO transfertDTO) {
-        throw new UnsupportedOperationException();
+        Account mainAccount = accountService.getAccount(transfertDTO.getMainAccountNumber());
+        Account destinationAccount = accountService.getAccount(transfertDTO.getDestinationAccountNumber());
+        if(transfertDTO.getAmount() <= 0){
+            throw new AmountNotValidException("Amount not valid");
+        }
+        if (transfertDTO.getAmount() > mainAccount.getBalance()) {
+            throw new NotSufficientFunds("Not sufficient funds");
+        }
+        mainAccount.setBalance(mainAccount.getBalance() - transfertDTO.getAmount());
+        destinationAccount.setBalance(mainAccount.getBalance() + transfertDTO.getAmount());
+        mainAccount = accountService.updateAccount(mainAccount);
+        destinationAccount = accountService.updateAccount(destinationAccount);
+
+        Operation transfert = new Operation(mainAccount, destinationAccount, transfertDTO.getAmount(), OperationType.TRANSFERT);
+        transfert = operationRepository.save(transfert);
+        return transfert;
+
     }
 
 }
