@@ -15,6 +15,7 @@ public class OperationController {
 
     @Autowired
     OperationService operationService;
+
     @PostMapping(value = "/deposit", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Operation deposit(@RequestBody OperationDTO operationDTO) {
         return operationService.deposit(operationDTO);
@@ -22,13 +23,13 @@ public class OperationController {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
-    private void accountNotFoundHandler(AccountNotFoundException e){
-
+    private void accountNotFoundHandler(AccountNotFoundException e) {
+        e.printStackTrace();
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    private void amountNotValidException(AmountNotValidException e){
-
+    private void amountNotValidException(AmountNotValidException e) {
+        e.printStackTrace();
     }
 }

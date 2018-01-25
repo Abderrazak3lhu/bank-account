@@ -45,7 +45,7 @@ public class OperationServiceTest {
     }
 
     @Test
-    public void depositValidMoney_validAccount_expect_depositOperationCreated() {
+    public void depositValidMoney_validAccount_depositOperationCreated() {
 
         given(accountService.getAccount(operationDTO.getAccountNumber())).willReturn(accountDeposit);
         given(accountService.updateAccount(anyObject())).willReturn(accountDeposit);
@@ -59,8 +59,8 @@ public class OperationServiceTest {
         Assertions.assertThat(deposit.getType()).isEqualTo(OperationType.DEPOSIT);
     }
 
-    @Test(expected =  AmountNotValidException.class)
-    public void depositNotValidMoney_validAccount_expect_AmountNotValidException() {
+    @Test(expected = AmountNotValidException.class)
+    public void depositNotValidMoney_validAccount_AmountNotValidException() {
 
         given(accountService.getAccount(notValidOperationDTO.getAccountNumber())).willReturn(accountDeposit);
         deposit = operationService.deposit(notValidOperationDTO);

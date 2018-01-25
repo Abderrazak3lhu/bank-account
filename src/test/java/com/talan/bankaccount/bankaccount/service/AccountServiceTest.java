@@ -9,7 +9,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.mockito.BDDMockito.given;
@@ -20,9 +19,10 @@ import static org.mockito.Matchers.anyLong;
 public class AccountServiceTest {
 
     @Mock
-    AccountRepository accountRepository;
+    private AccountRepository accountRepository;
     @InjectMocks
-    AccountService accountService;
+    private AccountService accountService;
+
     private Account retrievedAccount;
     private Account updatedAccount;
     private Account accountToUpdate;
@@ -35,7 +35,7 @@ public class AccountServiceTest {
     }
 
     @Test
-    public void getAccount_validAccount_expect_accountReturned() {
+    public void getAccount_validAccount_accountReturned() {
 
         given(accountRepository.findOne(anyLong())).willReturn(retrievedAccount);
         retrievedAccount = accountService.getAccount(1L);
@@ -51,8 +51,9 @@ public class AccountServiceTest {
         retrievedAccount = accountService.getAccount(1L);
 
     }
+
     @Test
-    public void updateAccount_validAccount_expect_accountUpdated() {
+    public void updateAccount_validAccount_accountUpdated() {
 
         given(accountRepository.findOne(anyLong())).willReturn(retrievedAccount);
         given(accountRepository.save(any(Account.class))).willReturn(updatedAccount);

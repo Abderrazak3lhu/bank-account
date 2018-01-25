@@ -23,17 +23,20 @@ public class BankAccountIntegrationTest {
     @LocalServerPort
     private int port;
 
-    TestRestTemplate restTemplate;
+    private TestRestTemplate restTemplate;
+
+    private HttpEntity<OperationDTO> request;
 
     @Before
-    public void initialise(){
+    public void initialise() {
         restTemplate = new TestRestTemplate();
-    }
-    @Test
-    public void depositMoney_validAccount_expect_depositSuccess() throws Exception {
-
         OperationDTO operationDTO = new OperationDTO(1L, 1000D);
-        HttpEntity<OperationDTO> request = new HttpEntity<OperationDTO>(operationDTO);
+        request = new HttpEntity<>(operationDTO);
+    }
+
+    @Test
+    public void depositMoney_validAccount_depositSuccess() {
+
         ResponseEntity<Operation> response = restTemplate.exchange(createURLWithPort("/deposit"), HttpMethod.POST, request, Operation.class);
 
         Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
