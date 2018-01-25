@@ -21,6 +21,11 @@ public class OperationController {
         return operationService.deposit(operationDTO);
     }
 
+    @PostMapping(value = "/withdraw", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Operation withdraw(@RequestBody OperationDTO operationDTO) {
+        return operationService.withdraw(operationDTO);
+    }
+
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
     private void accountNotFoundHandler(AccountNotFoundException e) {
