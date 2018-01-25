@@ -107,4 +107,23 @@ public class OperationControllerTest {
                 .andExpect(jsonPath("type").value("WITHDRAW"));
     }
 
+    @Test
+    public void withdraw_NotValidAccount_responseStatusNotAcceptable() throws Exception {
+
+        given(operationService.withdraw(anyObject())).willThrow(new AccountNotFoundException("account not found"));
+        mockMvc.perform(MockMvcRequestBuilders.post("/withdraw")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(operationDTO)))
+                .andExpect(status().isNotAcceptable());
+    }
+
+    @Test
+    public void withdraw_NotValidAmount_responseStatusNotAcceptable() throws Exception {
+
+        given(operationService.withdraw(anyObject())).willThrow(new AmountNotValidException("amount not valid"));
+        mockMvc.perform(MockMvcRequestBuilders.post("/withdraw").contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(operationDTO)))
+                .andExpect(status().isBadRequest());
+    }
+
 }
