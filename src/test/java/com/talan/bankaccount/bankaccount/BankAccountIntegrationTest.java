@@ -35,7 +35,7 @@ public class BankAccountIntegrationTest {
     }
 
     @Test
-    public void depositMoney_validAccount_depositSuccess() {
+    public void deposit_validAccount_depositSuccess() {
 
         ResponseEntity<Operation> response = restTemplate.exchange(createURLWithPort("/deposit"), HttpMethod.POST, request, Operation.class);
 
@@ -45,6 +45,19 @@ public class BankAccountIntegrationTest {
         Assertions.assertThat(response.getBody().getType()).isEqualTo(OperationType.DEPOSIT);
         Assertions.assertThat(response.getBody().getAccount().getAccountNumber()).isEqualTo(1L);
         Assertions.assertThat(response.getBody().getAccount().getBalance()).isEqualTo(1000D);
+
+    }
+    @Test
+    public void withdraw_validAccount_withdrawSuccess() {
+
+        ResponseEntity<Operation> response = restTemplate.exchange(createURLWithPort("/withdraw"), HttpMethod.POST, request, Operation.class);
+
+        Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        //suppose that account amount is 1000 and id is 1;
+        Assertions.assertThat(response.getBody().getAmount()).isEqualTo(1000D);
+        Assertions.assertThat(response.getBody().getType()).isEqualTo(OperationType.WITHDRAW);
+        Assertions.assertThat(response.getBody().getAccount().getAccountNumber()).isEqualTo(1L);
+        Assertions.assertThat(response.getBody().getAccount().getBalance()).isEqualTo(0D);
 
     }
 
