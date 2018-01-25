@@ -29,7 +29,7 @@ public class OperationController {
     }
     @PostMapping(value = "/transfert", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Operation transfert(@RequestBody TransfertDTO transfertDTO) {
-        throw new UnsupportedOperationException();
+        return operationService.transfert(transfertDTO);
     }
 
     @ExceptionHandler
