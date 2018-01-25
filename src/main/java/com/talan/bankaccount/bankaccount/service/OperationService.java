@@ -21,7 +21,7 @@ public class OperationService {
 
     private Logger logger = LoggerFactory.getLogger(OperationService.class);
 
-
+    // ######### Deposit #########
     public Operation deposit(OperationDTO operationDTO) {
 
         Account account = accountService.getAccount(operationDTO.getAccountNumber());
@@ -34,5 +34,10 @@ public class OperationService {
         deposit = operationRepository.save(deposit);
         logger.info("deposit saved : ", deposit);
         return deposit;
+    }
+
+    // ######### Withdraw #########
+    public Operation withdraw(OperationDTO operationDTO) {
+        throw new UnsupportedOperationException();
     }
 }
