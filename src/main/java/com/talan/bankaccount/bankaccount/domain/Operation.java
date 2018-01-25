@@ -31,4 +31,11 @@ public class Operation implements Serializable {
         this.amount = amount;
         this.type = type;
     }
+
+    public Operation(Account mainAccount, Account destinationAccount, double amount, OperationType type) {
+        this.account = mainAccount;
+        this.destinationAccount = destinationAccount;
+        this.amount = amount;
+        this.type = type;
+    }
 }

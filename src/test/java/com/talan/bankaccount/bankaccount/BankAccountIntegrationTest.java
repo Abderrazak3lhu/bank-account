@@ -76,8 +76,8 @@ public class BankAccountIntegrationTest {
         Assertions.assertThat(response.getBody().getAmount()).isEqualTo(1000D);
         Assertions.assertThat(response.getBody().getType()).isEqualTo(OperationType.TRANSFERT);
         Assertions.assertThat(response.getBody().getAccount().getAccountNumber()).isEqualTo(1L);
-        Assertions.assertThat(response.getBody().getDestinationAccount().getAccountNumber()).isEqualTo(2L);
         Assertions.assertThat(response.getBody().getAccount().getBalance()).isEqualTo(0D);
+        Assertions.assertThat(response.getBody().getDestinationAccount().getAccountNumber()).isEqualTo(2L);
         Assertions.assertThat(response.getBody().getDestinationAccount().getBalance()).isEqualTo(1000D);
 
     }

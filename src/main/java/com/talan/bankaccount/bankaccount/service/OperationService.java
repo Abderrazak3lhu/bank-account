@@ -7,6 +7,7 @@ import com.talan.bankaccount.bankaccount.exception.AmountNotValidException;
 import com.talan.bankaccount.bankaccount.exception.NotSufficientFunds;
 import com.talan.bankaccount.bankaccount.util.OperationDTO;
 import com.talan.bankaccount.bankaccount.util.OperationType;
+import com.talan.bankaccount.bankaccount.util.TransfertDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,4 +56,10 @@ public class OperationService {
         logger.info("withdraw saved : ", withdraw);
         return withdraw;
     }
+
+    // ######### Transfert #########
+    public Operation transfert(TransfertDTO transfertDTO) {
+        throw new UnsupportedOperationException();
+    }
+
 }

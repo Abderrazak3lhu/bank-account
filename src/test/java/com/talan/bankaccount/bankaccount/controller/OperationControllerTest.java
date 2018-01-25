@@ -43,19 +43,22 @@ public class OperationControllerTest {
     private OperationDTO operationDTO;
     private Operation deposit;
     private Operation withdraw;
+    private Operation transfert;
 
     @Before
     public void initialize() {
         objectMapper = new ObjectMapper();
         operationDTO = new OperationDTO(123123123L, 1000D);
         // deposit init
-        Account accountDeposit = new Account(123123123L, 0);
-        accountDeposit.setBalance(accountDeposit.getBalance() + operationDTO.getAmount());
+        Account accountDeposit = new Account(123123123L, 1000D);
         deposit = new Operation(accountDeposit, 1000L, OperationType.DEPOSIT);
         //withdraw init
-        Account accountWithdraw = new Account(123123123L, 1000D);
-        accountWithdraw.setBalance(accountWithdraw.getBalance() - operationDTO.getAmount());
+        Account accountWithdraw = new Account(123123123L, 0D);
         withdraw = new Operation(accountWithdraw, 1000L, OperationType.WITHDRAW);
+        // transfert init
+        Account mainAccount = new Account(1L, 0D);
+        Account destinationAccount = new Account(2L, 1000D);
+        transfert = new Operation(mainAccount, destinationAccount, 1000D, OperationType.TRANSFERT);
     }
 
     // ######### Deposit #########
@@ -135,5 +138,24 @@ public class OperationControllerTest {
                 .content(objectMapper.writeValueAsString(operationDTO)))
                 .andExpect(status().isNotAcceptable());
     }
+
+    // ######### Transfert #########
+
+    @Test
+    public void transfert_validAccounts_transfertSuccess() throws Exception {
+
+        given(operationService.transfert(anyObject())).willReturn(transfert);
+        mockMvc.perform(MockMvcRequestBuilders.post("/transfert").contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(operationDTO)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("account.accountNumber").value(1L))
+                .andExpect(jsonPath("account.balance").value(0D))
+                .andExpect(jsonPath("destinationAccount.accountNumber").value(2L))
+                .andExpect(jsonPath("destinationAccount.balance").value(1000D))
+                .andExpect(jsonPath("amount").value(1000D))
+                .andExpect(jsonPath("type").value("TRANSFERT"));
+    }
+
+
 
 }
