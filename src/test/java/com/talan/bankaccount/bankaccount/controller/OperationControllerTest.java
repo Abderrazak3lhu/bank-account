@@ -8,8 +8,9 @@ import com.talan.bankaccount.bankaccount.exception.AmountNotValidException;
 import com.talan.bankaccount.bankaccount.exception.NotSufficientFunds;
 import com.talan.bankaccount.bankaccount.service.AccountService;
 import com.talan.bankaccount.bankaccount.service.OperationService;
-import com.talan.bankaccount.bankaccount.util.OperationDTO;
+import com.talan.bankaccount.bankaccount.dto.OperationDTO;
 import com.talan.bankaccount.bankaccount.util.OperationType;
+import com.talan.bankaccount.bankaccount.dto.TransfertDTO;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -41,6 +42,7 @@ public class OperationControllerTest {
 
     private ObjectMapper objectMapper;
     private OperationDTO operationDTO;
+    private TransfertDTO transfertDTO;
     private Operation deposit;
     private Operation withdraw;
     private Operation transfert;
@@ -56,6 +58,7 @@ public class OperationControllerTest {
         Account accountWithdraw = new Account(123123123L, 0D);
         withdraw = new Operation(accountWithdraw, 1000L, OperationType.WITHDRAW);
         // transfert init
+        transfertDTO = new TransfertDTO(1L, 2L, 1000D);
         Account mainAccount = new Account(1L, 0D);
         Account destinationAccount = new Account(2L, 1000D);
         transfert = new Operation(mainAccount, destinationAccount, 1000D, OperationType.TRANSFERT);
@@ -146,7 +149,7 @@ public class OperationControllerTest {
 
         given(operationService.transfert(anyObject())).willReturn(transfert);
         mockMvc.perform(MockMvcRequestBuilders.post("/transfert").contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(operationDTO)))
+                .content(objectMapper.writeValueAsString(transfertDTO)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("account.accountNumber").value(1L))
                 .andExpect(jsonPath("account.balance").value(0D))
@@ -154,6 +157,33 @@ public class OperationControllerTest {
                 .andExpect(jsonPath("destinationAccount.balance").value(1000D))
                 .andExpect(jsonPath("amount").value(1000D))
                 .andExpect(jsonPath("type").value("TRANSFERT"));
+    }
+    @Test
+    public void transfert_NotValidAccount_responseStatusNotAcceptable() throws Exception {
+
+        given(operationService.transfert(anyObject())).willThrow(new AccountNotFoundException("account not found"));
+        mockMvc.perform(MockMvcRequestBuilders.post("/transfert")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(transfertDTO)))
+                .andExpect(status().isNotAcceptable());
+    }
+    @Test
+    public void transfert_NotValidAmount_responseStatusNotAcceptable() throws Exception {
+
+        given(operationService.transfert(anyObject())).willThrow(new AmountNotValidException("amount not valid"));
+        mockMvc.perform(MockMvcRequestBuilders.post("/transfert")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(transfertDTO)))
+                .andExpect(status().isBadRequest());
+    }
+    @Test
+    public void transfert_notSufficientFunds_responseStatusNotAcceptable() throws Exception {
+
+        given(operationService.transfert(anyObject())).willThrow(new AccountNotFoundException("not sufficient funds"));
+        mockMvc.perform(MockMvcRequestBuilders.post("/transfert")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(transfertDTO)))
+                .andExpect(status().isNotAcceptable());
     }
 
 

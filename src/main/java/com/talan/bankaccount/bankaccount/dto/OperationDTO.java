@@ -1,4 +1,4 @@
-package com.talan.bankaccount.bankaccount.util;
+package com.talan.bankaccount.bankaccount.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
