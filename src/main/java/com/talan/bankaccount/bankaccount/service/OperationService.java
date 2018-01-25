@@ -4,6 +4,7 @@ import com.talan.bankaccount.bankaccount.dao.OperationRepository;
 import com.talan.bankaccount.bankaccount.domain.Account;
 import com.talan.bankaccount.bankaccount.domain.Operation;
 import com.talan.bankaccount.bankaccount.exception.AmountNotValidException;
+import com.talan.bankaccount.bankaccount.exception.NotSufficientFunds;
 import com.talan.bankaccount.bankaccount.util.OperationDTO;
 import com.talan.bankaccount.bankaccount.util.OperationType;
 import org.slf4j.Logger;
@@ -38,6 +39,20 @@ public class OperationService {
 
     // ######### Withdraw #########
     public Operation withdraw(OperationDTO operationDTO) {
-        throw new UnsupportedOperationException();
+
+        Account account = accountService.getAccount(operationDTO.getAccountNumber());
+        if (operationDTO.getAmount() <= 0) {
+            throw new AmountNotValidException("Amount not valid");
+        }
+        if (operationDTO.getAmount() > account.getBalance()) {
+            throw new NotSufficientFunds("Not sufficient funds");
+        }
+
+        account.setBalance(account.getBalance() - operationDTO.getAmount());
+        account = accountService.updateAccount(account);
+        Operation withdraw = new Operation(account, operationDTO.getAmount(), OperationType.WITHDRAW);
+        withdraw = operationRepository.save(withdraw);
+        logger.info("withdraw saved : ", withdraw);
+        return withdraw;
     }
 }

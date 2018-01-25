@@ -5,6 +5,7 @@ import com.talan.bankaccount.bankaccount.domain.Account;
 import com.talan.bankaccount.bankaccount.domain.Operation;
 import com.talan.bankaccount.bankaccount.exception.AccountNotFoundException;
 import com.talan.bankaccount.bankaccount.exception.AmountNotValidException;
+import com.talan.bankaccount.bankaccount.exception.NotSufficientFunds;
 import com.talan.bankaccount.bankaccount.service.AccountService;
 import com.talan.bankaccount.bankaccount.service.OperationService;
 import com.talan.bankaccount.bankaccount.util.OperationDTO;
@@ -124,6 +125,15 @@ public class OperationControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.post("/withdraw").contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(operationDTO)))
                 .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void withdraw_notSufficientFunds_responseStatusNotAcceptable() throws Exception {
+
+        given(operationService.withdraw(anyObject())).willThrow(new NotSufficientFunds("not sufficient funds"));
+        mockMvc.perform(MockMvcRequestBuilders.post("/withdraw").contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(operationDTO)))
+                .andExpect(status().isNotAcceptable());
     }
 
 }
