@@ -11,6 +11,7 @@ public class BankAccountApplicationTests {
 
     @Test
     public void contextLoads() {
+    // do init here when context loads
     }
 
 }

@@ -4,6 +4,7 @@ import com.talan.bankaccount.bankaccount.domain.Operation;
 import com.talan.bankaccount.bankaccount.dto.OperationDTO;
 import com.talan.bankaccount.bankaccount.util.OperationType;
 import com.talan.bankaccount.bankaccount.dto.TransfertDTO;
+import com.talan.bankaccount.bankaccount.util.bankAccountConstants;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
@@ -53,7 +54,7 @@ public class BankAccountIntegrationTest {
     @Test
     public void A_deposit_validAccount_depositSuccess() {
 
-        ResponseEntity<Operation> response = restTemplate.exchange(createURLWithPort("/deposit"), HttpMethod.POST, depositRequest, Operation.class);
+        ResponseEntity<Operation> response = restTemplate.exchange(createURLWithPort(bankAccountConstants.DEPOSIT_URL), HttpMethod.POST, depositRequest, Operation.class);
 
         Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         Assertions.assertThat(response.getBody().getAmount()).isEqualTo(1000D);
@@ -66,7 +67,7 @@ public class BankAccountIntegrationTest {
     @Test
     public void B_withdraw_validAccount_withdrawSuccess() {
 
-        ResponseEntity<Operation> response = restTemplate.exchange(createURLWithPort("/withdraw"), HttpMethod.POST, withdrawRequest, Operation.class);
+        ResponseEntity<Operation> response = restTemplate.exchange(createURLWithPort(bankAccountConstants.WITHDRAW_URL), HttpMethod.POST, withdrawRequest, Operation.class);
 
         Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         Assertions.assertThat(response.getBody().getAmount()).isEqualTo(1000D);
@@ -79,7 +80,7 @@ public class BankAccountIntegrationTest {
     @Test
     public void C_transfert_validAccounts_transfertSuccess() {
 
-        ResponseEntity<Operation> response = restTemplate.exchange(createURLWithPort("/transfert"), HttpMethod.POST, transfertRequest, Operation.class);
+        ResponseEntity<Operation> response = restTemplate.exchange(createURLWithPort(bankAccountConstants.TRANSFERT_URL), HttpMethod.POST, transfertRequest, Operation.class);
 
         Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         Assertions.assertThat(response.getBody().getAmount()).isEqualTo(1000D);

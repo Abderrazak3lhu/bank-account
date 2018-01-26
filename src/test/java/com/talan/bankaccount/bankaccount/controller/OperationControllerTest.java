@@ -11,6 +11,7 @@ import com.talan.bankaccount.bankaccount.service.OperationService;
 import com.talan.bankaccount.bankaccount.dto.OperationDTO;
 import com.talan.bankaccount.bankaccount.util.OperationType;
 import com.talan.bankaccount.bankaccount.dto.TransfertDTO;
+import com.talan.bankaccount.bankaccount.util.bankAccountConstants;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -70,7 +71,7 @@ public class OperationControllerTest {
     public void deposit_validAccount_depositSuccess() throws Exception {
 
         given(operationService.deposit(anyObject())).willReturn(deposit);
-        mockMvc.perform(MockMvcRequestBuilders.post("/deposit").contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(MockMvcRequestBuilders.post(bankAccountConstants.DEPOSIT_URL).contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(operationDTO)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("account.accountNumber").value(123123123L))
@@ -82,8 +83,8 @@ public class OperationControllerTest {
     @Test
     public void deposit_NotValidAccount_responseStatusNotAcceptable() throws Exception {
 
-        given(operationService.deposit(anyObject())).willThrow(new AccountNotFoundException("account not found"));
-        mockMvc.perform(MockMvcRequestBuilders.post("/deposit")
+        given(operationService.deposit(anyObject())).willThrow(new AccountNotFoundException(bankAccountConstants.ACCOUNT_NOT_FOUND));
+        mockMvc.perform(MockMvcRequestBuilders.post(bankAccountConstants.DEPOSIT_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(operationDTO)))
                 .andExpect(status().isNotAcceptable());
@@ -92,8 +93,8 @@ public class OperationControllerTest {
     @Test
     public void deposit_NotValidAmount_responseStatusNotAcceptable() throws Exception {
 
-        given(operationService.deposit(anyObject())).willThrow(new AmountNotValidException("amount not valid"));
-        mockMvc.perform(MockMvcRequestBuilders.post("/deposit").contentType(MediaType.APPLICATION_JSON)
+        given(operationService.deposit(anyObject())).willThrow(new AmountNotValidException(bankAccountConstants.AMOUNT_NOT_VALID));
+        mockMvc.perform(MockMvcRequestBuilders.post(bankAccountConstants.DEPOSIT_URL).contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(operationDTO)))
                 .andExpect(status().isBadRequest());
 
@@ -105,7 +106,7 @@ public class OperationControllerTest {
     public void withdraw_validAccount_withdrawSuccess() throws Exception {
 
         given(operationService.withdraw(anyObject())).willReturn(withdraw);
-        mockMvc.perform(MockMvcRequestBuilders.post("/withdraw").contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(MockMvcRequestBuilders.post(bankAccountConstants.WITHDRAW_URL).contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(operationDTO)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("account.accountNumber").value(123123123L))
@@ -117,8 +118,8 @@ public class OperationControllerTest {
     @Test
     public void withdraw_NotValidAccount_responseStatusNotAcceptable() throws Exception {
 
-        given(operationService.withdraw(anyObject())).willThrow(new AccountNotFoundException("account not found"));
-        mockMvc.perform(MockMvcRequestBuilders.post("/withdraw")
+        given(operationService.withdraw(anyObject())).willThrow(new AccountNotFoundException(bankAccountConstants.ACCOUNT_NOT_FOUND));
+        mockMvc.perform(MockMvcRequestBuilders.post(bankAccountConstants.WITHDRAW_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(operationDTO)))
                 .andExpect(status().isNotAcceptable());
@@ -127,8 +128,8 @@ public class OperationControllerTest {
     @Test
     public void withdraw_NotValidAmount_responseStatusNotAcceptable() throws Exception {
 
-        given(operationService.withdraw(anyObject())).willThrow(new AmountNotValidException("amount not valid"));
-        mockMvc.perform(MockMvcRequestBuilders.post("/withdraw").contentType(MediaType.APPLICATION_JSON)
+        given(operationService.withdraw(anyObject())).willThrow(new AmountNotValidException(bankAccountConstants.AMOUNT_NOT_VALID));
+        mockMvc.perform(MockMvcRequestBuilders.post(bankAccountConstants.WITHDRAW_URL).contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(operationDTO)))
                 .andExpect(status().isBadRequest());
     }
@@ -136,8 +137,8 @@ public class OperationControllerTest {
     @Test
     public void withdraw_notSufficientFunds_responseStatusNotAcceptable() throws Exception {
 
-        given(operationService.withdraw(anyObject())).willThrow(new NotSufficientFunds("not sufficient funds"));
-        mockMvc.perform(MockMvcRequestBuilders.post("/withdraw").contentType(MediaType.APPLICATION_JSON)
+        given(operationService.withdraw(anyObject())).willThrow(new NotSufficientFunds(bankAccountConstants.NOT_SUFFICIENT_FUNDS));
+        mockMvc.perform(MockMvcRequestBuilders.post(bankAccountConstants.WITHDRAW_URL).contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(operationDTO)))
                 .andExpect(status().isNotAcceptable());
     }
@@ -148,7 +149,7 @@ public class OperationControllerTest {
     public void transfert_validAccounts_transfertSuccess() throws Exception {
 
         given(operationService.transfert(anyObject())).willReturn(transfert);
-        mockMvc.perform(MockMvcRequestBuilders.post("/transfert").contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(MockMvcRequestBuilders.post(bankAccountConstants.TRANSFERT_URL).contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(transfertDTO)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("account.accountNumber").value(1L))
@@ -161,8 +162,8 @@ public class OperationControllerTest {
     @Test
     public void transfert_NotValidAccount_responseStatusNotAcceptable() throws Exception {
 
-        given(operationService.transfert(anyObject())).willThrow(new AccountNotFoundException("account not found"));
-        mockMvc.perform(MockMvcRequestBuilders.post("/transfert")
+        given(operationService.transfert(anyObject())).willThrow(new AccountNotFoundException(bankAccountConstants.ACCOUNT_NOT_FOUND));
+        mockMvc.perform(MockMvcRequestBuilders.post(bankAccountConstants.TRANSFERT_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(transfertDTO)))
                 .andExpect(status().isNotAcceptable());
@@ -170,8 +171,8 @@ public class OperationControllerTest {
     @Test
     public void transfert_NotValidAmount_responseStatusNotAcceptable() throws Exception {
 
-        given(operationService.transfert(anyObject())).willThrow(new AmountNotValidException("amount not valid"));
-        mockMvc.perform(MockMvcRequestBuilders.post("/transfert")
+        given(operationService.transfert(anyObject())).willThrow(new AmountNotValidException(bankAccountConstants.AMOUNT_NOT_VALID));
+        mockMvc.perform(MockMvcRequestBuilders.post(bankAccountConstants.TRANSFERT_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(transfertDTO)))
                 .andExpect(status().isBadRequest());
@@ -179,8 +180,8 @@ public class OperationControllerTest {
     @Test
     public void transfert_notSufficientFunds_responseStatusNotAcceptable() throws Exception {
 
-        given(operationService.transfert(anyObject())).willThrow(new AccountNotFoundException("not sufficient funds"));
-        mockMvc.perform(MockMvcRequestBuilders.post("/transfert")
+        given(operationService.transfert(anyObject())).willThrow(new NotSufficientFunds(bankAccountConstants.NOT_SUFFICIENT_FUNDS));
+        mockMvc.perform(MockMvcRequestBuilders.post(bankAccountConstants.TRANSFERT_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(transfertDTO)))
                 .andExpect(status().isNotAcceptable());

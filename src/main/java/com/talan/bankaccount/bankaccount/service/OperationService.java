@@ -8,6 +8,7 @@ import com.talan.bankaccount.bankaccount.exception.NotSufficientFunds;
 import com.talan.bankaccount.bankaccount.dto.OperationDTO;
 import com.talan.bankaccount.bankaccount.util.OperationType;
 import com.talan.bankaccount.bankaccount.dto.TransfertDTO;
+import com.talan.bankaccount.bankaccount.util.bankAccountConstants;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,7 +27,7 @@ public class OperationService {
 
         Account account = accountService.getByAccountNumber(operationDTO.getAccountNumber());
         if (operationDTO.getAmount() <= 0) {
-            throw new AmountNotValidException("Amount not valid");
+            throw new AmountNotValidException(bankAccountConstants.AMOUNT_NOT_VALID);
         }
         account.setBalance(account.getBalance() + operationDTO.getAmount());
         account = accountService.update(account);
@@ -41,10 +42,10 @@ public class OperationService {
 
         Account account = accountService.getByAccountNumber(operationDTO.getAccountNumber());
         if (operationDTO.getAmount() <= 0) {
-            throw new AmountNotValidException("Amount not valid");
+            throw new AmountNotValidException(bankAccountConstants.AMOUNT_NOT_VALID);
         }
         if (operationDTO.getAmount() > account.getBalance()) {
-            throw new NotSufficientFunds("Not sufficient funds");
+            throw new NotSufficientFunds(bankAccountConstants.NOT_SUFFICIENT_FUNDS);
         }
 
         account.setBalance(account.getBalance() - operationDTO.getAmount());
@@ -60,10 +61,10 @@ public class OperationService {
         Account mainAccount = accountService.getByAccountNumber(transfertDTO.getMainAccountNumber());
         Account destinationAccount = accountService.getByAccountNumber(transfertDTO.getDestinationAccountNumber());
         if (transfertDTO.getAmount() <= 0) {
-            throw new AmountNotValidException("Amount not valid");
+            throw new AmountNotValidException(bankAccountConstants.AMOUNT_NOT_VALID);
         }
         if (transfertDTO.getAmount() > mainAccount.getBalance()) {
-            throw new NotSufficientFunds("Not sufficient funds");
+            throw new NotSufficientFunds(bankAccountConstants.NOT_SUFFICIENT_FUNDS);
         }
         mainAccount.setBalance(mainAccount.getBalance() - transfertDTO.getAmount());
         destinationAccount.setBalance(mainAccount.getBalance() + transfertDTO.getAmount());
