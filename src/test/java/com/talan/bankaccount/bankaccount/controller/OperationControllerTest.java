@@ -12,6 +12,7 @@ import com.talan.bankaccount.bankaccount.dto.OperationDTO;
 import com.talan.bankaccount.bankaccount.util.OperationType;
 import com.talan.bankaccount.bankaccount.dto.TransfertDTO;
 import com.talan.bankaccount.bankaccount.util.bankAccountConstants;
+import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,7 +24,12 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.willReturn;
+import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyObject;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -47,6 +53,7 @@ public class OperationControllerTest {
     private Operation deposit;
     private Operation withdraw;
     private Operation transfert;
+    private List<Operation> transactionsHistory;
 
     @Before
     public void initialize() {
@@ -63,6 +70,10 @@ public class OperationControllerTest {
         Account mainAccount = new Account(1L, 0D);
         Account destinationAccount = new Account(2L, 1000D);
         transfert = new Operation(mainAccount, destinationAccount, 1000D, OperationType.TRANSFERT);
+
+        // transactions history
+        transactionsHistory = new ArrayList<Operation>();
+        transactionsHistory.add(transfert);
     }
 
     // ######### Deposit #########
@@ -187,6 +198,20 @@ public class OperationControllerTest {
                 .andExpect(status().isNotAcceptable());
     }
 
+// ######### Transactions history #########
 
+    @Test
+    public void transactions_recordedTransactions_returnTransactions() throws Exception {
+
+        given(operationService.transactionsHistoryForAccountNumber(anyLong())).willReturn(transactionsHistory);
+        mockMvc.perform(MockMvcRequestBuilders.get(bankAccountConstants.TRANSACTIONS_HISTORY,1).contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(transfertDTO)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", Matchers.hasSize(1)))
+                .andExpect(jsonPath("$.[0].amount").value(1000D))
+                .andExpect(jsonPath("$.[0].type").value("TRANSFERT"))
+                .andExpect(jsonPath("account.accountNumber").value(1L))
+                .andExpect(jsonPath("destinationAccount.accountNumber").value(2L));
+    }
 
 }

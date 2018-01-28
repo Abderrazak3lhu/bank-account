@@ -2,8 +2,8 @@ package com.talan.bankaccount.bankaccount;
 
 import com.talan.bankaccount.bankaccount.domain.Operation;
 import com.talan.bankaccount.bankaccount.dto.OperationDTO;
-import com.talan.bankaccount.bankaccount.util.OperationType;
 import com.talan.bankaccount.bankaccount.dto.TransfertDTO;
+import com.talan.bankaccount.bankaccount.util.OperationType;
 import com.talan.bankaccount.bankaccount.util.bankAccountConstants;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
@@ -22,6 +22,8 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.List;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
@@ -36,25 +38,28 @@ public class BankAccountIntegrationTest {
 
     private TestRestTemplate restTemplate;
 
-    private HttpEntity<OperationDTO> depositRequest ;
-    private HttpEntity<OperationDTO> withdrawRequest;
-    private HttpEntity<TransfertDTO> transfertRequest;
+    private HttpEntity<OperationDTO> depositDTO;
+    private HttpEntity<OperationDTO> withdrawDTO;
+    private HttpEntity<TransfertDTO> transfertDTO;
+    private Long transactionsHistoryForAccountNumber;
 
     @Before
     public void initialise() {
         restTemplate = new TestRestTemplate();
         // deposit init
-        depositRequest = new HttpEntity<>(new OperationDTO(1L, 1000D));
+        depositDTO = new HttpEntity<>(new OperationDTO(1L, 1000D));
         // withdraw init
-        withdrawRequest = new HttpEntity<>(new OperationDTO(2L, 1000D));
+        withdrawDTO = new HttpEntity<>(new OperationDTO(2L, 1000D));
         // transfert init
-        transfertRequest = new HttpEntity<>(new TransfertDTO(3L, 4L, 1000D));
+        transfertDTO = new HttpEntity<>(new TransfertDTO(3L, 4L, 1000D));
+        // transactions history account number init
+        transactionsHistoryForAccountNumber= 1L;
     }
 
     @Test
     public void A_deposit_validAccount_depositSuccess() {
 
-        ResponseEntity<Operation> response = restTemplate.exchange(createURLWithPort(bankAccountConstants.DEPOSIT_URL), HttpMethod.POST, depositRequest, Operation.class);
+        ResponseEntity<Operation> response = restTemplate.exchange(createURLWithPort(bankAccountConstants.DEPOSIT_URL), HttpMethod.POST, depositDTO, Operation.class);
 
         Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         Assertions.assertThat(response.getBody().getAmount()).isEqualTo(1000D);
@@ -67,7 +72,7 @@ public class BankAccountIntegrationTest {
     @Test
     public void B_withdraw_validAccount_withdrawSuccess() {
 
-        ResponseEntity<Operation> response = restTemplate.exchange(createURLWithPort(bankAccountConstants.WITHDRAW_URL), HttpMethod.POST, withdrawRequest, Operation.class);
+        ResponseEntity<Operation> response = restTemplate.exchange(createURLWithPort(bankAccountConstants.WITHDRAW_URL), HttpMethod.POST, withdrawDTO, Operation.class);
 
         Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         Assertions.assertThat(response.getBody().getAmount()).isEqualTo(1000D);
@@ -80,7 +85,7 @@ public class BankAccountIntegrationTest {
     @Test
     public void C_transfert_validAccounts_transfertSuccess() {
 
-        ResponseEntity<Operation> response = restTemplate.exchange(createURLWithPort(bankAccountConstants.TRANSFERT_URL), HttpMethod.POST, transfertRequest, Operation.class);
+        ResponseEntity<Operation> response = restTemplate.exchange(createURLWithPort(bankAccountConstants.TRANSFERT_URL), HttpMethod.POST, transfertDTO, Operation.class);
 
         Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         Assertions.assertThat(response.getBody().getAmount()).isEqualTo(1000D);
@@ -89,6 +94,18 @@ public class BankAccountIntegrationTest {
         Assertions.assertThat(response.getBody().getAccount().getBalance()).isEqualTo(0D);
         Assertions.assertThat(response.getBody().getDestinationAccount().getAccountNumber()).isEqualTo(4L);
         Assertions.assertThat(response.getBody().getDestinationAccount().getBalance()).isEqualTo(1000D);
+
+    }
+    @Test
+    public void D_transactions_recordedTransactions_returnTransactions(){
+        // TODO Correct the error Caused by: com.fasterxml.jackson.databind.JsonMappingException: Can not deserialize instance of com.talan.bankaccount.bankaccount.domain.Operation[] out of START_OBJECT token
+
+        // ResponseEntity<Operation[]> response = restTemplate.getForEntity(createURLWithPort(bankAccountConstants.TRANSACTIONS_HISTORY), Operation[].class);
+        // Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        //Assertions.assertThat(response.getBody().length).isEqualTo(1);
+        //Assertions.assertThat(response.getBody()[0]).isEqualTo(1);
+        //Assertions.assertThat(response.getBody()[0].getAccount().getAccountNumber()).isEqualTo(1L);
+        //Assertions.assertThat(response.getBody()[0].getAccount().getBalance()).isEqualTo(1L);
 
     }
 

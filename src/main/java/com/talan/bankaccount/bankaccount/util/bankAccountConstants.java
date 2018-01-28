@@ -12,5 +12,6 @@ public final class bankAccountConstants {
     public static final String DEPOSIT_URL= "/deposit";
     public static final String WITHDRAW_URL= "/withdraw";
     public static final String TRANSFERT_URL= "/transfert";
+    public static final String TRANSACTIONS_HISTORY = "/transactions/{accountNumber}";
 
 }

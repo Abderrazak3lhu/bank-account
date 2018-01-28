@@ -45,6 +45,9 @@ public class OperationServiceTest {
     private Account mainAccount;
     private Account destinationAccount;
 
+    // TODO , sonar feedback :             throw new AmountNotValidException(bankAccountConstants.AMOUNT_NOT_VALID) not covered by tests
+    // TODO , sonar feedback :             throw new NotSufficientFunds(bankAccountConstants.NOT_SUFFICIENT_FUNDS) not covered by tests
+    // TODO , sonar feedback :              if (transfertDTO.getAmount() > mainAccount.getBalance()) partially covered by tests
 
     @Before
     public void initialize() {
