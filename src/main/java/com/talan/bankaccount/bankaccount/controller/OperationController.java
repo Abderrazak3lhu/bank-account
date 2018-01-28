@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @Slf4j
 public class OperationController {
@@ -35,8 +37,8 @@ public class OperationController {
         return operationService.transfert(transfertDTO);
     }
     @GetMapping(value = bankAccountConstants.TRANSACTIONS_HISTORY, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Operation transfert(@PathVariable Long accountNumber) {
+    public List<Operation > transactionsHistory(@PathVariable Long accountNumber) {
         log.info("transactions history endpoint invoked");
-        throw new UnsupportedOperationException();
+        return operationService.transactionsHistoryForAccountNumber(accountNumber);
     }
 }

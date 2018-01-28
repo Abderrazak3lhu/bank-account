@@ -209,8 +209,8 @@ public class OperationControllerTest {
                 .andExpect(jsonPath("$", Matchers.hasSize(1)))
                 .andExpect(jsonPath("$.[0].amount").value(1000D))
                 .andExpect(jsonPath("$.[0].type").value("TRANSFERT"))
-                .andExpect(jsonPath("account.accountNumber").value(1L))
-                .andExpect(jsonPath("destinationAccount.accountNumber").value(2L));
+                .andExpect(jsonPath("$.[0].account.accountNumber").value(1L))
+                .andExpect(jsonPath("$.[0].destinationAccount.accountNumber").value(2L));
     }
 
 }
