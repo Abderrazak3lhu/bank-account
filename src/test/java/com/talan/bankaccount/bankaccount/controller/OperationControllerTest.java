@@ -204,8 +204,7 @@ public class OperationControllerTest {
     public void transactions_recordedTransactions_returnTransactions() throws Exception {
 
         given(operationService.transactionsHistoryForAccountNumber(anyLong())).willReturn(transactionsHistory);
-        mockMvc.perform(MockMvcRequestBuilders.get(bankAccountConstants.TRANSACTIONS_HISTORY,1).contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(transfertDTO)))
+        mockMvc.perform(MockMvcRequestBuilders.get(bankAccountConstants.TRANSACTIONS_HISTORY,1).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", Matchers.hasSize(1)))
                 .andExpect(jsonPath("$.[0].amount").value(1000D))

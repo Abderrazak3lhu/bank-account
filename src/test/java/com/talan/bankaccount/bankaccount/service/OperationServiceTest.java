@@ -15,8 +15,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyObject;
 
 @RunWith(SpringRunner.class)
@@ -44,10 +48,8 @@ public class OperationServiceTest {
     private Operation transfert;
     private Account mainAccount;
     private Account destinationAccount;
-
-    // TODO , sonar feedback :             throw new AmountNotValidException(bankAccountConstants.AMOUNT_NOT_VALID) not covered by tests
-    // TODO , sonar feedback :             throw new NotSufficientFunds(bankAccountConstants.NOT_SUFFICIENT_FUNDS) not covered by tests
-    // TODO , sonar feedback :              if (transfertDTO.getAmount() > mainAccount.getBalance()) partially covered by tests
+    // transaction history
+    private List<Operation> transactionsHistory;
 
     @Before
     public void initialize() {
@@ -64,6 +66,9 @@ public class OperationServiceTest {
         mainAccount = new Account(1L, 1000D);
         destinationAccount = new Account(2L, 0D);
         transfert = new Operation(mainAccount, destinationAccount, 1000D, OperationType.TRANSFERT);
+        // transactions history
+        transactionsHistory = new ArrayList<Operation>();
+        transactionsHistory.add(transfert);
     }
 
     // ######### Deposit #########
@@ -124,5 +129,19 @@ public class OperationServiceTest {
         Assertions.assertThat(transfert.getDestinationAccount().getBalance()).isEqualTo(1000D);
         Assertions.assertThat(transfert.getAmount()).isEqualTo(1000D);
         Assertions.assertThat(transfert.getType()).isEqualTo(OperationType.TRANSFERT);
+    }
+    // ######### Transfert #########
+    @Test
+    public void transactions_recordedTransactions_returnTransactions() {
+
+        given(operationRepository.getOperationsByAccountNumber(anyLong())).willReturn(transactionsHistory);
+
+        transactionsHistory = operationService.transactionsHistoryForAccountNumber(1L);
+
+        Assertions.assertThat(transactionsHistory.size()).isEqualTo(1);
+        Assertions.assertThat(transactionsHistory.get(0).getAccount().getAccountNumber()).isEqualTo(1L);
+        Assertions.assertThat(transactionsHistory.get(0).getDestinationAccount().getAccountNumber()).isEqualTo(2L);
+        Assertions.assertThat(transactionsHistory.get(0).getAmount()).isEqualTo(1000D);
+        Assertions.assertThat(transactionsHistory.get(0).getType()).isEqualTo(OperationType.TRANSFERT);
     }
 }
