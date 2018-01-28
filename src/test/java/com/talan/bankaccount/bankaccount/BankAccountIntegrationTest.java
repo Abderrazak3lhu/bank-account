@@ -14,6 +14,7 @@ import org.junit.runners.MethodSorters;
 import org.springframework.boot.context.embedded.LocalServerPort;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -22,7 +23,6 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -100,7 +100,8 @@ public class BankAccountIntegrationTest {
     public void D_transactions_recordedTransactions_returnTransactions(){
         // TODO Correct the error Caused by: com.fasterxml.jackson.databind.JsonMappingException: Can not deserialize instance of com.talan.bankaccount.bankaccount.domain.Operation[] out of START_OBJECT token
 
-        //ResponseEntity<Operation[]> response = restTemplate.getForEntity(createURLWithPort(bankAccountConstants.TRANSACTIONS_HISTORY+"/1"), Operation[].class);
+        // ResponseEntity<Operation[]> response = restTemplate.getForEntity(createURLWithPort(bankAccountConstants.TRANSACTIONS_HISTORY+"/1"), Operation[].class);
+
         //Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         //Assertions.assertThat(response.getBody().length).isEqualTo(1);
         //Assertions.assertThat(response.getBody()[0]).isEqualTo(1);
