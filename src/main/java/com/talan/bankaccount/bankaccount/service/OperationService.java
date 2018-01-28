@@ -80,6 +80,6 @@ public class OperationService {
 
     public List<Operation> transactionsHistoryForAccountNumber(long accountNumber) {
         accountService.getByAccountNumber(accountNumber);
-        return operationRepository.getOperationsByAccountNumber(accountNumber);
+        return operationRepository.findByAllOperationsByAccountNumber(accountNumber);
     }
 }

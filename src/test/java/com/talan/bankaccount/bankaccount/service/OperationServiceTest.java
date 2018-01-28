@@ -134,7 +134,7 @@ public class OperationServiceTest {
     @Test
     public void transactions_recordedTransactions_returnTransactions() {
 
-        given(operationRepository.getOperationsByAccountNumber(anyLong())).willReturn(transactionsHistory);
+        given(operationRepository.findByAllOperationsByAccountNumber(anyLong())).willReturn(transactionsHistory);
 
         transactionsHistory = operationService.transactionsHistoryForAccountNumber(1L);
 

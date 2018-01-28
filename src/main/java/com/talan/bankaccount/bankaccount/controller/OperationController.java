@@ -36,7 +36,7 @@ public class OperationController {
         log.info("Transfert endpoint invoked");
         return operationService.transfert(transfertDTO);
     }
-    @GetMapping(value = bankAccountConstants.TRANSACTIONS_HISTORY, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = bankAccountConstants.TRANSACTIONS_HISTORY+"/{accountNumber}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Operation > transactionsHistory(@PathVariable Long accountNumber) {
         log.info("transactions history endpoint invoked");
         return operationService.transactionsHistoryForAccountNumber(accountNumber);

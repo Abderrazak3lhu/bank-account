@@ -100,8 +100,8 @@ public class BankAccountIntegrationTest {
     public void D_transactions_recordedTransactions_returnTransactions(){
         // TODO Correct the error Caused by: com.fasterxml.jackson.databind.JsonMappingException: Can not deserialize instance of com.talan.bankaccount.bankaccount.domain.Operation[] out of START_OBJECT token
 
-        // ResponseEntity<Operation[]> response = restTemplate.getForEntity(createURLWithPort(bankAccountConstants.TRANSACTIONS_HISTORY), Operation[].class);
-        // Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        //ResponseEntity<Operation[]> response = restTemplate.getForEntity(createURLWithPort(bankAccountConstants.TRANSACTIONS_HISTORY+"/1"), Operation[].class);
+        //Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         //Assertions.assertThat(response.getBody().length).isEqualTo(1);
         //Assertions.assertThat(response.getBody()[0]).isEqualTo(1);
         //Assertions.assertThat(response.getBody()[0].getAccount().getAccountNumber()).isEqualTo(1L);
