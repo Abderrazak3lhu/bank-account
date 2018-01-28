@@ -78,7 +78,7 @@ public class OperationService {
         return transfert;
     }
 
-    public List<Operation> transactionsHistoryForAccountNumber(long l) {
-        throw new UnsupportedOperationException();
+    public List<Operation> transactionsHistoryForAccountNumber(long accountNumber) {
+        return operationRepository.getOperationsByAccountNumber(accountNumber);
     }
 }
