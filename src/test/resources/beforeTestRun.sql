@@ -58,6 +58,8 @@ CREATE TABLE `operation` (
   `destination_account` bigint(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+INSERT INTO `operation` (`id`, `amount`, `operation_date`, `type`, `main_account`, `destination_account`) VALUES
+(20, 1000, '2018-02-01 17:17:01', 0, 1, NULL);
 --
 -- Index pour les tables déchargées
 --
