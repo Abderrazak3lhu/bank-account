@@ -60,7 +60,7 @@ public class BankAccountIntegrationTest {
     public void A_deposit_validAccount_depositSuccess() {
 
         ResponseEntity<Operation> response = restTemplate.exchange(createURLWithPort(bankAccountConstants.DEPOSIT_URL), HttpMethod.POST, depositDTO, Operation.class);
-
+// todo REST ASSURED
         Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         Assertions.assertThat(response.getBody().getAmount()).isEqualTo(1000D);
         Assertions.assertThat(response.getBody().getType()).isEqualTo(OperationType.DEPOSIT);

@@ -97,7 +97,7 @@ public class OperationServiceTest {
 
     // ######### Withdraw #########
     @Test
-    public void withdrawValidAmount_validAccount_withdrawalOperationDone() {
+    public void withdrawValidAmount_validAccount_depositOperationDone() {
 
         given(accountService.getByAccountNumber(operationDTO.getAccountNumber())).willReturn(accountWithdraw);
         given(accountService.update(anyObject())).willReturn(accountWithdraw);
