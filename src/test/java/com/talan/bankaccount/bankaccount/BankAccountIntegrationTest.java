@@ -60,7 +60,6 @@ public class BankAccountIntegrationTest {
     public void A_deposit_validAccount_depositSuccess() {
 
         ResponseEntity<Operation> response = restTemplate.exchange(createURLWithPort(bankAccountConstants.DEPOSIT_URL), HttpMethod.POST, depositDTO, Operation.class);
-// todo REST ASSURED
         Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         Assertions.assertThat(response.getBody().getAmount()).isEqualTo(1000D);
         Assertions.assertThat(response.getBody().getType()).isEqualTo(OperationType.DEPOSIT);
@@ -98,7 +97,6 @@ public class BankAccountIntegrationTest {
     }
     @Test
     public void D_transactions_recordedTransactions_returnTransactions(){
-        // TODO Correct the error Caused by: com.fasterxml.jackson.databind.JsonMappingException: Can not deserialize instance of com.talan.bankaccount.bankaccount.domain.Operation[] out of START_OBJECT token
 
         ResponseEntity<Operation[]> response = restTemplate.getForEntity(createURLWithPort(bankAccountConstants.TRANSACTIONS_HISTORY+"/"+transactionsHistoryForAccountNumber), Operation[].class);
         Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);

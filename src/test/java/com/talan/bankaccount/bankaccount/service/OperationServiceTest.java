@@ -71,7 +71,6 @@ public class OperationServiceTest {
         transactionsHistory.add(transfert);
     }
 
-    // ######### Deposit #########
     @Test
     public void depositValidAmount_validAccount_depositOperationDone() {
 
@@ -95,9 +94,8 @@ public class OperationServiceTest {
 
     }
 
-    // ######### Withdraw #########
     @Test
-    public void withdrawValidAmount_validAccount_depositOperationDone() {
+    public void withdrawValidAmount_validAccount_withdrawOperationDone() {
 
         given(accountService.getByAccountNumber(operationDTO.getAccountNumber())).willReturn(accountWithdraw);
         given(accountService.update(anyObject())).willReturn(accountWithdraw);
@@ -111,7 +109,6 @@ public class OperationServiceTest {
         Assertions.assertThat(withdraw.getType()).isEqualTo(OperationType.WITHDRAW);
     }
 
-    // ######### Transfert #########
     @Test
     public void transfertValidAmount_validAccounts_transfertOperationDone() {
 
@@ -130,7 +127,7 @@ public class OperationServiceTest {
         Assertions.assertThat(transfert.getAmount()).isEqualTo(1000D);
         Assertions.assertThat(transfert.getType()).isEqualTo(OperationType.TRANSFERT);
     }
-    // ######### Transfert #########
+
     @Test
     public void transactions_recordedTransactions_returnTransactions() {
 

@@ -76,7 +76,7 @@ public class OperationControllerTest {
         transactionsHistory.add(transfert);
     }
 
-    // ######### Deposit #########
+
 
     @Test
     public void deposit_validAccount_depositSuccess() throws Exception {
@@ -111,7 +111,6 @@ public class OperationControllerTest {
 
     }
 
-    // ######### Withdraw #########
 
     @Test
     public void withdraw_validAccount_withdrawSuccess() throws Exception {
@@ -154,7 +153,6 @@ public class OperationControllerTest {
                 .andExpect(status().isNotAcceptable());
     }
 
-    // ######### Transfert #########
 
     @Test
     public void transfert_validAccounts_transfertSuccess() throws Exception {
@@ -198,7 +196,6 @@ public class OperationControllerTest {
                 .andExpect(status().isNotAcceptable());
     }
 
-// ######### Transactions history #########
 
     @Test
     public void transactions_recordedTransactions_returnTransactions() throws Exception {

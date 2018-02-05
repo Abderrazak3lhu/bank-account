@@ -24,7 +24,7 @@ public class OperationService {
     @Autowired
     OperationRepository operationRepository;
 
-    // ######### Deposit #########
+
     public Operation deposit(OperationDTO operationDTO) {
 
         Account account = accountService.getByAccountNumber(operationDTO.getAccountNumber());
@@ -39,7 +39,7 @@ public class OperationService {
         return deposit;
     }
 
-    // ######### Withdraw #########
+
     public Operation withdraw(OperationDTO operationDTO) {
 
         Account account = accountService.getByAccountNumber(operationDTO.getAccountNumber());
@@ -58,7 +58,7 @@ public class OperationService {
         return withdraw;
     }
 
-    // ######### Transfert #########
+
     public Operation transfert(TransfertDTO transfertDTO) {
         Account mainAccount = accountService.getByAccountNumber(transfertDTO.getMainAccountNumber());
         Account destinationAccount = accountService.getByAccountNumber(transfertDTO.getDestinationAccountNumber());
