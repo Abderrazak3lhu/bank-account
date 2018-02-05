@@ -23,15 +23,13 @@ public class OperationService {
     AccountService accountService;
     @Autowired
     OperationRepository operationRepository;
-    
+
     public Operation deposit(OperationDTO operationDTO) {
 
         Account account = accountService.getByAccountNumber(operationDTO.getAccountNumber());
 
         verifyIfAmountIsNotValid(operationDTO.getAmount());
-
-        account.setBalance(account.getBalance() + operationDTO.getAmount());
-        account = accountService.update(account);
+        account = updateAccountBalanceForDeposit(account, operationDTO.getAmount());
 
         Operation deposit = new Operation(account, operationDTO.getAmount(), OperationType.DEPOSIT);
         deposit = operationRepository.save(deposit);
@@ -48,8 +46,7 @@ public class OperationService {
         verifyIfAmountIsNotValid(operationDTO.getAmount());
         verifyIfFundsAreNotSufficient(operationDTO.getAmount(), account.getBalance());
 
-        account.setBalance(account.getBalance() - operationDTO.getAmount());
-        account = accountService.update(account);
+        account = updateAccountBalanceForWithdrawal(account, operationDTO.getAmount());
 
         Operation withdraw = new Operation(account, operationDTO.getAmount(), OperationType.WITHDRAW);
         withdraw = operationRepository.save(withdraw);
@@ -66,10 +63,8 @@ public class OperationService {
         verifyIfAmountIsNotValid(transfertDTO.getAmount());
         verifyIfFundsAreNotSufficient(transfertDTO.getAmount(), mainAccount.getBalance());
 
-        mainAccount.setBalance(mainAccount.getBalance() - transfertDTO.getAmount());
-        destinationAccount.setBalance(mainAccount.getBalance() + transfertDTO.getAmount());
-        mainAccount = accountService.update(mainAccount);
-        destinationAccount = accountService.update(destinationAccount);
+        mainAccount = updateAccountBalanceForWithdrawal(mainAccount, transfertDTO.getAmount());
+        destinationAccount = updateAccountBalanceForDeposit(destinationAccount, transfertDTO.getAmount());
 
         Operation transfert = new Operation(mainAccount, destinationAccount, transfertDTO.getAmount(), OperationType.TRANSFERT);
         transfert = operationRepository.save(transfert);
@@ -94,4 +89,15 @@ public class OperationService {
             throw new NotSufficientFunds(bankAccountConstants.NOT_SUFFICIENT_FUNDS);
         }
     }
+
+    private Account updateAccountBalanceForDeposit(Account account, Double amount){
+        account.setBalance(account.getBalance() + amount);
+        return accountService.update(account);
+    }
+
+    private Account updateAccountBalanceForWithdrawal(Account account, Double amount){
+        account.setBalance(account.getBalance() - amount);
+        return accountService.update(account);
+    }
+
 }
