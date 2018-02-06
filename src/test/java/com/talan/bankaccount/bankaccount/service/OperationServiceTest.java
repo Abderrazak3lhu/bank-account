@@ -133,7 +133,7 @@ public class OperationServiceTest {
 
         given(operationRepository.findByAllOperationsByAccountNumber(anyLong())).willReturn(transactionsHistory);
 
-        transactionsHistory = operationService.transactionsHistoryForAccountNumber(1L);
+        transactionsHistory = operationService.getTransactionsHistoryForAccountNumber(1L);
 
         Assertions.assertThat(transactionsHistory.size()).isEqualTo(1);
         Assertions.assertThat(transactionsHistory.get(0).getAccount().getAccountNumber()).isEqualTo(1L);

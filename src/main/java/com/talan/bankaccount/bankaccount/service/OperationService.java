@@ -6,9 +6,9 @@ import com.talan.bankaccount.bankaccount.domain.Operation;
 import com.talan.bankaccount.bankaccount.dto.OperationDTO;
 import com.talan.bankaccount.bankaccount.dto.TransfertDTO;
 import com.talan.bankaccount.bankaccount.exception.AmountNotValidException;
-import com.talan.bankaccount.bankaccount.exception.NotSufficientFunds;
+import com.talan.bankaccount.bankaccount.exception.NotSufficientFundsException;
 import com.talan.bankaccount.bankaccount.util.OperationType;
-import com.talan.bankaccount.bankaccount.util.bankAccountConstants;
+import com.talan.bankaccount.bankaccount.util.AppConstants;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -73,30 +73,34 @@ public class OperationService {
         return transfert;
     }
 
-    public List<Operation> transactionsHistoryForAccountNumber(long accountNumber) {
+    public List<Operation> getTransactionsHistoryForAccountNumber(long accountNumber) {
         accountService.getByAccountNumber(accountNumber);
-        return operationRepository.findByAllOperationsByAccountNumber(accountNumber);
+        List<Operation> operations = operationRepository.findByAllOperationsByAccountNumber(accountNumber);
+        log.info("returned operations : ", operations);
+        return operations;
     }
 
     private void verifyIfAmountIsNotValid(double amount) {
         if (amount <= 0) {
-            throw new AmountNotValidException(bankAccountConstants.AMOUNT_NOT_VALID);
+            throw new AmountNotValidException(AppConstants.AMOUNT_NOT_VALID);
         }
     }
 
     private void verifyIfFundsAreNotSufficient(double amount, double accountBalance) {
         if (amount > accountBalance) {
-            throw new NotSufficientFunds(bankAccountConstants.NOT_SUFFICIENT_FUNDS);
+            throw new NotSufficientFundsException(AppConstants.NOT_SUFFICIENT_FUNDS);
         }
     }
 
-    private Account updateAccountBalanceForDeposit(Account account, Double amount){
+    private Account updateAccountBalanceForDeposit(Account account, Double amount) {
         account.setBalance(account.getBalance() + amount);
+        log.info("Account balance updated for deposit", account);
         return accountService.update(account);
     }
 
-    private Account updateAccountBalanceForWithdrawal(Account account, Double amount){
+    private Account updateAccountBalanceForWithdrawal(Account account, Double amount) {
         account.setBalance(account.getBalance() - amount);
+        log.info("Account balance updated for withdrawal", account);
         return accountService.update(account);
     }
 

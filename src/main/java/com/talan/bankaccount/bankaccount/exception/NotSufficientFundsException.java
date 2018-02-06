@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Slf4j
 @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
-public class NotSufficientFunds extends RuntimeException {
+public class NotSufficientFundsException extends RuntimeException {
 
-    public NotSufficientFunds(String message) {
+    public NotSufficientFundsException(String message) {
         log.error(message);
     }
 }
