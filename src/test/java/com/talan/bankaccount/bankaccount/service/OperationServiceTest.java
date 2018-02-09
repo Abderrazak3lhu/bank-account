@@ -30,10 +30,10 @@ public class OperationServiceTest {
     private OperationRepository operationRepository;
 
     @Mock
-    private AccountService accountService;
+    private CAccountService accountService;
 
     @InjectMocks
-    private OperationService operationService;
+    private COperationService operationService;
 
     // deposit setup
     private OperationDTO operationDTO;

@@ -21,7 +21,7 @@ public class AccountServiceTest {
     @Mock
     private AccountRepository accountRepository;
     @InjectMocks
-    private AccountService accountService;
+    private CAccountService accountService;
 
     private Account retrievedAccount;
     private Account updatedAccount;
