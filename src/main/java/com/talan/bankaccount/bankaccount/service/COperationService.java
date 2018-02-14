@@ -19,10 +19,14 @@ import java.util.List;
 @Slf4j
 public class COperationService implements OperationService{
 
+    private final AccountService accountService;
+    private final OperationRepository operationRepository;
+
     @Autowired
-    CAccountService accountService;
-    @Autowired
-    OperationRepository operationRepository;
+    public COperationService(AccountService accountService, OperationRepository operationRepository){
+        this.accountService = accountService;
+        this.operationRepository = operationRepository;
+    }
 
     public Operation deposit(OperationDTO operationDTO) {
 

@@ -17,8 +17,13 @@ import java.util.List;
 @Slf4j
 public class OperationController {
 
+
+    private final OperationService operationService;
+
     @Autowired
-    OperationService operationService;
+    public OperationController(OperationService operationService){
+        this.operationService = operationService;
+    };
 
     @PostMapping(value = AppConstants.DEPOSIT_URL, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Operation deposit(@RequestBody OperationDTO operationDTO) {

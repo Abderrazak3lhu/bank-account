@@ -11,8 +11,12 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 public class CAccountService implements AccountService{
+
+    private final AccountRepository accountRepository;
     @Autowired
-    private AccountRepository accountRepository;
+    public CAccountService(AccountRepository accountRepository){
+        this.accountRepository = accountRepository;
+    }
 
     public Account getByAccountNumber(Long accountNumber) {
         Account account = accountRepository.findOne(accountNumber);
